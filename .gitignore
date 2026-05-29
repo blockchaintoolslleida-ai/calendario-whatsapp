@@ -1,0 +1,9 @@
+node_modules/
+dist/
+data/*
+!data/.gitkeep
+credentials/*
+!credentials/.gitkeep
+.env
+*.log
+.wwebjs_auth/

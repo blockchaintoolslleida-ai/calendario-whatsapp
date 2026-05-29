@@ -1,0 +1,13 @@
+{
+  "name": "calendario-whatsapp",
+  "version": "1.0.0",
+  "description": "Recordatorios automáticos por WhatsApp desde Google Calendar",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "npx ts-node src/index.ts",
+    "build": "npx tsc",
+    "dev": "npx ts-node src/index.ts"
+  },
+  "keywords": ["google-calendar", "whatsapp", "reminders"],
+  "license": "MIT"
+}
