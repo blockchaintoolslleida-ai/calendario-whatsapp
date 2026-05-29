@@ -16,6 +16,9 @@ export const config = {
       process.env.GOOGLE_TOKEN_PATH || 'data/token.json'
     ),
     redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback',
+    // El email del usuario cuyo calendario queremos leer
+    // (la service account debe tener acceso a este calendario)
+    calendarId: process.env.CALENDAR_ID || 'primary',
   },
   whatsapp: {
     // whatsapp-web.js guarda la sesión automáticamente en esta carpeta

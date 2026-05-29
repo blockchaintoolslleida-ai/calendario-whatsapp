@@ -1,5 +1,5 @@
 import { google, calendar_v3 } from 'googleapis';
-import { Auth } from 'googleapis';
+import { JWT } from 'google-auth-library';
 import { config } from '../config';
 
 export interface CalendarEvent {
@@ -13,7 +13,7 @@ export interface CalendarEvent {
  * Obtiene los eventos del día siguiente desde Google Calendar.
  */
 export async function getTomorrowEvents(
-  auth: Auth.OAuth2Client
+  auth: JWT
 ): Promise<CalendarEvent[]> {
   const calendar = google.calendar({ version: 'v3', auth });
 
@@ -35,7 +35,7 @@ export async function getTomorrowEvents(
 
   try {
     const response = await calendar.events.list({
-      calendarId: 'primary',
+      calendarId: config.google.calendarId,
       timeMin: tomorrowStart.toISOString(),
       timeMax: tomorrowEnd.toISOString(),
       singleEvents: true,
