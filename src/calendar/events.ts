@@ -43,7 +43,7 @@ export async function getTomorrowEvents(
     });
 
     const events: CalendarEvent[] = (response.data.items || [])
-      .filter((event): event is calendar_v3.SchemaEvent & { id: string } => {
+      .filter((event): event is calendar_v3.Schema$Event & { id: string } => {
         // Solo eventos con fecha/hora de inicio (ignorar all-day)
         return !!(event.id && event.start?.dateTime && event.summary);
       })
