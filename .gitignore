@@ -6,5 +6,6 @@ credentials/*
 !credentials/.gitkeep
 .env
 *.log
+qr.png
 .wwebjs_auth/
 chrome/

@@ -20,10 +20,7 @@ export const config = {
     // (la service account debe tener acceso a este calendario)
     calendarId: process.env.CALENDAR_ID || 'primary',
   },
-  whatsapp: {
-    // whatsapp-web.js guarda la sesión automáticamente en esta carpeta
-    sessionPath: path.resolve(__dirname, '..', '.wwebjs_auth'),
-  },
+  // WhatsApp via OpenWA — maneja su propia sesión y autenticación
   notifiedDbPath: path.resolve(
     __dirname,
     '..',

@@ -17,19 +17,28 @@ export async function getTomorrowEvents(
 ): Promise<CalendarEvent[]> {
   const calendar = google.calendar({ version: 'v3', auth });
 
-  // Calcular inicio y fin del día siguiente en la zona horaria configurada
+  // Obtener la fecha de mañana en la zona horaria configurada
   const now = new Date();
-  const tzOffset = getTimezoneOffset(config.timezone, now);
+  const todayStr = now.toLocaleDateString('en-CA', { timeZone: config.timezone });
+  const [y, m, d] = todayStr.split('-').map(Number);
 
-  // Inicio de mañana (00:00)
-  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  const tomorrowStart = new Date(tomorrow.getTime() - tzOffset);
+  // Calcular mañana usando Date UTC (evita problemas de timezone de la máquina)
+  const tomorrowDate = new Date(Date.UTC(y, m - 1, d + 1));
+  const ty = tomorrowDate.getUTCFullYear();
+  const tm = tomorrowDate.getUTCMonth(); // 0-indexed
+  const td = tomorrowDate.getUTCDate();
 
-  // Fin de mañana (23:59:59)
-  const tomorrowEnd = new Date(tomorrowStart.getTime() + 24 * 60 * 60 * 1000 - 1);
+  // Calcular el offset de la timezone configurada al mediodía (evita DST edge)
+  const noonUTC = Date.UTC(ty, tm, td, 12, 0, 0);
+  const tzOffsetMs = getTimezoneOffset(config.timezone, new Date(noonUTC));
+
+  // Medianoche en la timezone configurada → UTC
+  const midnightUTC = Date.UTC(ty, tm, td, 0, 0, 0) - tzOffsetMs;
+  const tomorrowStart = new Date(midnightUTC);
+  const tomorrowEnd = new Date(midnightUTC + 24 * 60 * 60 * 1000 - 1);
 
   console.log(
-    `📅 Buscando eventos del ${tomorrowStart.toISOString().split('T')[0]} ` +
+    `📅 Buscando eventos del ${ty}-${String(tm + 1).padStart(2, '0')}-${String(td).padStart(2, '0')} ` +
     `(${tomorrowStart.toISOString()} → ${tomorrowEnd.toISOString()})`
   );
 
